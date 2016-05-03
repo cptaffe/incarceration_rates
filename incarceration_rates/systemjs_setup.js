@@ -10,5 +10,5 @@ System.config({
     },
   },
 });
-System.import('app/main')
+System.import('executions.js')
       .then(null, console.error.bind(console));
