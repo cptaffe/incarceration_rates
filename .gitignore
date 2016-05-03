@@ -1,4 +1,6 @@
 .sass-cache
 *.js
+*.js.map
+*.css
 node_modules
 typings
