@@ -17,8 +17,9 @@
           packages: {
             app: {format: 'register', defaultExtension: 'js'},
             'node_modules/d3': {main: 'd3.js', format: 'cjs', defaultExtension: 'js'},
+            'node_modules/lodash': {main: 'lodash.js', format: 'cjs', defaultExtension: 'js'},
           },
-          paths: {'d3': 'node_modules/d3'}
+          paths: {'d3': 'node_modules/d3', 'lodash': 'node_modules/lodash'}
         });
         System.import('executions.js').then(null, console.error.bind(console));
     </script>

@@ -1,8 +1,9 @@
 "use strict";
 
 import * as d3 from 'd3';
+import * as _ from 'lodash';
 
-function GenerateGraph(data) {
+function GenerateGraph(data_row, iter:number) {
     // define dimensions of graph
     let margins = [80, 80, 80, 80];
     let width = 1000 - margins[1] - margins[3];
@@ -11,7 +12,7 @@ function GenerateGraph(data) {
     // create a simple data array that we'll plot with a line (this array
     // represents only the Y values, X will just be the index location)
     // X scale will fit all values from data[] within pixels 0-w
-    let x = d3.scale.linear().domain([0, data.length]).range([0, width]);
+    let x = d3.scale.linear().domain([0, data_row.length]).range([0, width]);
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted
     // domain for the y-scale: bigger is up!)
     let y = d3.scale.linear().domain([0, 10]).range([height, 0]);
@@ -39,19 +40,20 @@ function GenerateGraph(data) {
                     'Plotting Y value for data point: '
                     + data_point
                     + ' to be at: '
-                    + y(data_point)
+                    + y(data_point[1])
                     + " using our yScale.");
             // return the Y coordinate where we want to plot this datapoint
-            return y(data_point);
+            return y(data_point[1]);
         })
         // Add an SVG element with the desired dimensions and margin.
-        let graph = d3.select("#graph").append("svg:svg")
+        let div_element = "#graph_" + iter;
+        let graph = d3.select(div_element).append("svg:svg")
               .attr("width", width + margins[1] + margins[3])
               .attr("height", height + margins[0] + margins[2])
             .append("svg:g")
               .attr("transform", "translate(" + margins[3] + "," + margins[0] + ")");
         // create yAxis
-        let xAxis = d3.svg.axis().scale(x).tickSize(-height).tickSubdivide(true);
+        let xAxis = d3.svg.axis().scale(x).tickSize(-height); //.tickSubdivide(true);
         // Add the x-axis.
         graph.append("svg:g")
               .attr("class", "x axis")
@@ -65,14 +67,15 @@ function GenerateGraph(data) {
               .attr("transform", "translate(-25,0)")
               .call(yAxisLeft);
 
-            // Add the line by appending an svg:path element with the data line
-            // we created above do this AFTER the axes above so that the line is
-            // above the tick-lines
-            graph.append("svg:path").attr("d", line(data));
+        // Add the line by appending an svg:path element with the data line
+        // we created above do this AFTER the axes above so that the line is
+        // above the tick-lines
+        graph.append("svg:path").attr("d", line(data_row.slice(1, data_row.length)));
 }
 
 let data = d3.csv("data/cp_executed.csv");
+console.log(_.range(0, 10));
 
-for (let item in data) {
-    GenerateGraph(data[item]);
+for (let iter in data) {
+    // GenerateGraph(data[i], i+1);
 }
