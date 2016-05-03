@@ -15,17 +15,17 @@ function GenerateGraph(data_row, iter:number) {
     // create a simple data array that we'll plot with a line (this array
     // represents only the Y values, X will just be the index location)
     // X scale will fit all values from data[] within pixels 0-w
-    let x = d3.scale.linear().domain([1977, 2014]).range([0, height]);
+    let x = d3.scale.linear().domain([0, 38]).range([0, height]);
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted
     // domain for the y-scale: bigger is up!)
-    let y = d3.scale.linear().domain([0, 10]).range([height, 0]);
+    let y = d3.scale.linear().domain([0, 50]).range([height, 0]);
     // automatically determining max range can work something like this
     // let y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
     // create a line function that can convert data[] into x and y points
     let line = d3.svg.line()
-        .x(function(d, i) { return x(i); })
-        .y(function(d) { return y(d[1]); })
-        .interpolate("basis");
+        .x(function(d, i) { return i; })
+        .y(function(d) { return d[0]; });
+        // .interpolate("basis");
     // Add an SVG element with the desired dimensions and margin.
     let div_element = "#graph_" + iter;
     let graph = d3.select(div_element).append("svg:svg")
@@ -61,7 +61,7 @@ for (let i in data) {
     let actual_data:number[] = [];
     let data_row = data[i];
     for (let j of years) {
-        actual_data.push(parseInt(data_row[j]))
+        actual_data.push(+data_row[j]);
     }
     GenerateGraph(actual_data, current_graph);
     current_graph++;
