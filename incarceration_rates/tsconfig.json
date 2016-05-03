@@ -1,8 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "removeComments": true,
-        "sourceMap": true
+        "removeComments": true
     },
     "exclude": [
         "node_modules",
