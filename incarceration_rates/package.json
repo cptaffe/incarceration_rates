@@ -18,6 +18,7 @@
   "homepage": "https://github.com/cemegginson/incarceration_rates#readme",
   "dependencies": {
     "d3": "^3.5.16",
+    "es6-shim": "^0.35.0",
     "systemjs": "^0.19.26"
   }
 }
