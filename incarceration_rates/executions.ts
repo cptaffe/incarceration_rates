@@ -7,25 +7,28 @@ import * as _ from 'lodash';
 let years = _.range(1977, 2015);
 
 function GenerateGraph(data_row, iter:number) {
+    // resort data_row
+    let data_row_temp = [];
+    for (let i = 0; i < data_row.length; i++) {
+        data_row_temp.push([i+1, data_row[i]]);
+    }
+    data_row = data_row_temp;
     // define dimensions of graph
     let margins:number[] = [80, 80, 80, 80];
     let width:number = 1000 - margins[1] - margins[3];
     let height:number = 400 - margins[0] - margins[2];
 
-    // create a simple data array that we'll plot with a line (this array
-    // represents only the Y values, X will just be the index location)
-    // X scale will fit all values from data[] within pixels 0-w
+    // Scale functions for x and y values
     let x = d3.scale.linear().domain([0, 38]).range([0, height]);
-    // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted
-    // domain for the y-scale: bigger is up!)
     let y = d3.scale.linear().domain([0, 50]).range([height, 0]);
+
     // automatically determining max range can work something like this
     // let y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
     // create a line function that can convert data[] into x and y points
     let line = d3.svg.line()
-        .x(function(d, i) { return i; })
-        .y(function(d) { return d[0]; });
-        // .interpolate("basis");
+        .x(function(d) { return x(d[0]); })
+        .y(function(d) { return y(d[1]); });
+
     // Add an SVG element with the desired dimensions and margin.
     let div_element = "#graph_" + iter;
     let graph = d3.select(div_element).append("svg:svg")
@@ -33,15 +36,19 @@ function GenerateGraph(data_row, iter:number) {
           .attr("height", height + margins[0] + margins[2])
         .append("svg:g")
           .attr("transform", "translate(" + margins[3] + "," + margins[0] + ")");
+
     // create yAxis
     let xAxis = d3.svg.axis().scale(x).tickSize(-height); //.tickSubdivide(true);
+
     // Add the x-axis.
     graph.append("svg:g")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
+
     // create left yAxis
     let yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+
     // Add the y-axis to the left
     graph.append("svg:g")
           .attr("class", "y axis")
@@ -52,7 +59,7 @@ function GenerateGraph(data_row, iter:number) {
     // we created above do this AFTER the axes above so that the line is
     // above the tick-lines
     console.log(data_row);
-    graph.append("svg:path").attr("d", line(data_row));
+    graph.append("svg:path").data(data_row).attr("d", line(data_row));
 }
 
 let current_graph:number = 1;
