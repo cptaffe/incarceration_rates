@@ -15,7 +15,7 @@ function GenerateGraph(data_row, iter:number) {
     // create a simple data array that we'll plot with a line (this array
     // represents only the Y values, X will just be the index location)
     // X scale will fit all values from data[] within pixels 0-w
-    let x = d3.scale.linear().domain([0, data_row.length]).range([0, width]);
+    let x = d3.scale.linear().domain([1977, 2014).range([0, height]);
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted
     // domain for the y-scale: bigger is up!)
     let y = d3.scale.linear().domain([0, 10]).range([height, 0]);
@@ -23,58 +23,36 @@ function GenerateGraph(data_row, iter:number) {
     // let y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
     // create a line function that can convert data[] into x and y points
     let line = d3.svg.line()
-        // assign the X function to plot our line as we wish
-        .x(function(data_point, index) {
-            // verbose logging to show what's actually being done
-            console.log(
-                    'Plotting X value for data point: '
-                    + data_point
-                    + ' using index: '
-                    + index
-                    + ' to be at: '
-                    + x(index)
-                    + ' using our xScale.');
-            // return the X coordinate where we want to plot this datapoint
-            return x(index);
-        })
-        .y(function(data_point) {
-            // verbose logging to show what's actually being done
-            console.log(
-                    'Plotting Y value for data point: '
-                    + data_point
-                    + ' to be at: '
-                    + y(data_point[1])
-                    + " using our yScale.");
-            // return the Y coordinate where we want to plot this datapoint
-            return y(data_point[1]);
-        })
-        // Add an SVG element with the desired dimensions and margin.
-        let div_element = "#graph_" + iter;
-        let graph = d3.select(div_element).append("svg:svg")
-              .attr("width", width + margins[1] + margins[3])
-              .attr("height", height + margins[0] + margins[2])
-            .append("svg:g")
-              .attr("transform", "translate(" + margins[3] + "," + margins[0] + ")");
-        // create yAxis
-        let xAxis = d3.svg.axis().scale(x).tickSize(-height); //.tickSubdivide(true);
-        // Add the x-axis.
-        graph.append("svg:g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis);
-        // create left yAxis
-        let yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
-        // Add the y-axis to the left
-        graph.append("svg:g")
-              .attr("class", "y axis")
-              .attr("transform", "translate(-25,0)")
-              .call(yAxisLeft);
+        .x(function(d) { return d[0]; })
+        .y(function(d) { return d[1]; })
+        .interpolate("basis");
+    // Add an SVG element with the desired dimensions and margin.
+    let div_element = "#graph_" + iter;
+    let graph = d3.select(div_element).append("svg:svg")
+          .attr("width", width + margins[1] + margins[3])
+          .attr("height", height + margins[0] + margins[2])
+        .append("svg:g")
+          .attr("transform", "translate(" + margins[3] + "," + margins[0] + ")");
+    // create yAxis
+    let xAxis = d3.svg.axis().scale(x).tickSize(-height); //.tickSubdivide(true);
+    // Add the x-axis.
+    graph.append("svg:g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+    // create left yAxis
+    let yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+    // Add the y-axis to the left
+    graph.append("svg:g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(-25,0)")
+          .call(yAxisLeft);
 
-        // Add the line by appending an svg:path element with the data line
-        // we created above do this AFTER the axes above so that the line is
-        // above the tick-lines
+    // Add the line by appending an svg:path element with the data line
+    // we created above do this AFTER the axes above so that the line is
+    // above the tick-lines
 
-        graph.append("svg:path").attr("d", line(data_row));
+    graph.append("svg:path").attr("d", line(data_row));
 }
 
 let current_graph:number = 1;
