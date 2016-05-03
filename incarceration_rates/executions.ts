@@ -51,7 +51,7 @@ function GenerateGraph(data_row, iter:number) {
     // Add the line by appending an svg:path element with the data line
     // we created above do this AFTER the axes above so that the line is
     // above the tick-lines
-
+    console.log(data_row);
     graph.append("svg:path").attr("d", line(data_row));
 }
 
@@ -59,10 +59,11 @@ let current_graph:number = 1;
 d3.csv("data/cp_executed.csv", function(data){
 for (let i in data) {
     let actual_data:number[] = [];
-    for (let j in years) {
-        actual_data.push(parseInt(data[i][j]))
+    let data_row = data[i];
+    for (let j of years) {
+        actual_data.push(parseInt(data_row[j]))
     }
-    GenerateGraph(data[i], current_graph);
+    GenerateGraph(actual_data, current_graph);
     current_graph++;
 }
 });
