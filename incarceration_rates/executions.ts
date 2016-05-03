@@ -8,14 +8,14 @@ let years = _.range(1977, 2015);
 
 function GenerateGraph(data_row, iter:number) {
     // define dimensions of graph
-    let margins = [80, 80, 80, 80];
-    let width = 1000 - margins[1] - margins[3];
-    let height = 400 - margins[0] - margins[2];
+    let margins:number[] = [80, 80, 80, 80];
+    let width:number = 1000 - margins[1] - margins[3];
+    let height:number = 400 - margins[0] - margins[2];
 
     // create a simple data array that we'll plot with a line (this array
     // represents only the Y values, X will just be the index location)
     // X scale will fit all values from data[] within pixels 0-w
-    let x = d3.scale.linear().domain([1977, 2014).range([0, height]);
+    let x = d3.scale.linear().domain([1977, 2014]).range([0, height]);
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted
     // domain for the y-scale: bigger is up!)
     let y = d3.scale.linear().domain([0, 10]).range([height, 0]);
