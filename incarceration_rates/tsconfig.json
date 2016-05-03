@@ -10,7 +10,7 @@
     ],
     "files": [
         "typings/browser.d.ts",
-        "executions.ts"
+        "app/executions.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
