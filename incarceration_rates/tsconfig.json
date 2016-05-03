@@ -1,9 +1,9 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "removeComments": true,
+        "removeComments": true
     },
     "exclude": [
-        "node_modules",
+        "node_modules"
     ]
 }
