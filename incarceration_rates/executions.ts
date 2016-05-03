@@ -23,7 +23,7 @@ function GenerateGraph(data_row, iter:number) {
     // let y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
     // create a line function that can convert data[] into x and y points
     let line = d3.svg.line()
-        .x(function(d) { console.log(d); return x(d[0]); })
+        .x(function(d, i) { return x(i); })
         .y(function(d) { return y(d[1]); })
         .interpolate("basis");
     // Add an SVG element with the desired dimensions and margin.
