@@ -3,6 +3,9 @@
 import * as d3 from 'd3';
 import * as _ from 'lodash';
 
+// We'll make this global since it should be useful.
+let years = _.range(1977, 2015);
+
 function GenerateGraph(data_row, iter:number) {
     // define dimensions of graph
     let margins = [80, 80, 80, 80];
@@ -70,12 +73,18 @@ function GenerateGraph(data_row, iter:number) {
         // Add the line by appending an svg:path element with the data line
         // we created above do this AFTER the axes above so that the line is
         // above the tick-lines
-        graph.append("svg:path").attr("d", line(data_row.slice(1, data_row.length)));
+
+        graph.append("svg:path").attr("d", line(data_row));
 }
 
-let data = d3.csv("data/cp_executed.csv");
-console.log(_.range(0, 10));
-
-for (let iter in data) {
-    // GenerateGraph(data[i], i+1);
+let current_graph:number = 1;
+d3.csv("data/cp_executed.csv", function(data){
+for (let i in data) {
+    let actual_data:number[] = [];
+    for (let j in years) {
+        actual_data.push(parseInt(data[i][j]))
+    }
+    GenerateGraph(data[i], current_graph);
+    current_graph++;
 }
+});
