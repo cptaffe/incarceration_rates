@@ -1,17 +1,8 @@
 System.config({
   packages: {
-    app: {
-      format: 'register',
-      defaultExtension: 'js'
-    },
-    '@d3/d3': {
-      format: 'cjs',
-      defaultExtension: 'js'
-    },
+    app: {format: 'register', defaultExtension: 'js'},
+    'node_modules/d3': {main: 'd3.js', format: 'cjs', defaultExtension: 'js'},
   },
-  map: {
-      'd3': 'node_modules/d3'
-  }
+  paths: {'d3': 'node_modules/d3'}
 });
-System.import('executions.js')
-      .then(null, console.error.bind(console));
+System.import('executions.js').then(null, console.error.bind(console));
